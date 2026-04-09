@@ -5,6 +5,8 @@ Wear Web is a role-based ecommerce platform built as two applications:
 - frontend: customer, seller, and admin web interfaces
 - backend: API, business logic, payments, returns, wallet, notifications, analytics
 
+Live site: https://wear-web-nine.vercel.app/
+
 This file documents product behavior and operational flow for each role.
 
 - Frontend setup and implementation: [frontend/README.md](frontend/README.md)
