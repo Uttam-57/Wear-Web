@@ -1,6 +1,34 @@
 import jwt from "jsonwebtoken";
 import AppError from "./appError.js";
 
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+
+const parseBoolean = (value, fallback) => {
+  if (value === undefined) return fallback;
+  const normalized = String(value).trim().toLowerCase();
+  if (normalized === "true") return true;
+  if (normalized === "false") return false;
+  return fallback;
+};
+
+const parseSameSite = (value, fallback) => {
+  if (!value) return fallback;
+  const normalized = String(value).trim().toLowerCase();
+  if (["lax", "strict", "none"].includes(normalized)) return normalized;
+  return fallback;
+};
+
+const isProduction = process.env.NODE_ENV === "production";
+const refreshCookieSameSite = parseSameSite(
+  process.env.REFRESH_COOKIE_SAME_SITE,
+  isProduction ? "none" : "lax"
+);
+const refreshCookieSecure = parseBoolean(
+  process.env.REFRESH_COOKIE_SECURE,
+  isProduction || refreshCookieSameSite === "none"
+);
+const refreshCookieDomain = process.env.REFRESH_COOKIE_DOMAIN || undefined;
+
 // ─── Generate Tokens ────────────────────────────────────────────────────────
 
 export const generateAccessToken = (payload) => {
@@ -44,13 +72,17 @@ export const verifyRefreshToken = (token) => {
 
 export const refreshTokenCookieOptions = {
   httpOnly: true,                                   // not accessible via document.cookie
-  secure: process.env.NODE_ENV === "production",    // HTTPS only in production
-  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000,                 // 7 days in milliseconds
+  secure: refreshCookieSecure,
+  sameSite: refreshCookieSameSite,
+  maxAge: SEVEN_DAYS_MS,
+  path: "/",
+  ...(refreshCookieDomain ? { domain: refreshCookieDomain } : {}),
 };
 
 export const clearRefreshTokenCookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+  secure: refreshCookieSecure,
+  sameSite: refreshCookieSameSite,
+  path: "/",
+  ...(refreshCookieDomain ? { domain: refreshCookieDomain } : {}),
 };

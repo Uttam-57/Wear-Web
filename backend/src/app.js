@@ -28,6 +28,24 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = (process.env.CLIENT_URLS || process.env.CLIENT_URL || "")
+	.split(",")
+	.map((origin) => origin.trim().replace(/\/+$/, ""))
+	.filter(Boolean);
+
+const corsOptions = {
+	credentials: true,
+	origin(origin, callback) {
+		// Allow non-browser and same-origin requests that do not send Origin header.
+		if (!origin) return callback(null, true);
+		const normalizedOrigin = String(origin).trim().replace(/\/+$/, "");
+		if (!allowedOrigins.length || allowedOrigins.includes(normalizedOrigin)) {
+			return callback(null, true);
+		}
+		return callback(new Error(`CORS blocked for origin: ${origin}`));
+	},
+};
+
 // ─── Stripe Webhook Raw Body (MUST be before express.json) ───────────────────
 app.use('/payment/webhook', express.raw({ type: 'application/json' }));
 
@@ -37,7 +55,7 @@ app.use(
 		crossOriginResourcePolicy: { policy: "cross-origin" },
 	})
 );
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors(corsOptions));
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 app.use(sanitizeInput);

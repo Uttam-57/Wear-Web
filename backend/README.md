@@ -167,7 +167,8 @@ Create backend/.env.
 | NODE_ENV | Yes | Runtime mode |
 | PORT | Yes | HTTP port |
 | MONGO_URI_APP | Yes | MongoDB URI |
-| CLIENT_URL | Yes | CORS frontend origin |
+| CLIENT_URL | Yes* | Primary frontend origin for CORS |
+| CLIENT_URLS | Optional | Comma-separated frontend origins for CORS (overrides CLIENT_URL when set) |
 
 ### Auth
 
@@ -175,6 +176,9 @@ Create backend/.env.
 | --- | --- | --- |
 | JWT_ACCESS_SECRET | Yes | Access token signing key |
 | JWT_REFRESH_SECRET | Yes | Refresh token signing key |
+| REFRESH_COOKIE_SAME_SITE | Optional | Cookie SameSite policy: lax, strict, or none |
+| REFRESH_COOKIE_SECURE | Optional | Force secure cookie flag (true or false) |
+| REFRESH_COOKIE_DOMAIN | Optional | Cookie domain for refresh token |
 
 ### Payments and Media
 
@@ -203,8 +207,11 @@ NODE_ENV=development
 PORT=5000
 MONGO_URI_APP=mongodb://127.0.0.1:27017/wearweb
 CLIENT_URL=http://localhost:5173
+CLIENT_URLS=http://localhost:5173
 JWT_ACCESS_SECRET=replace_me
 JWT_REFRESH_SECRET=replace_me
+REFRESH_COOKIE_SAME_SITE=lax
+REFRESH_COOKIE_SECURE=false
 STRIPE_SECRET_KEY=replace_me
 STRIPE_WEBHOOK_SECRET=replace_me
 CLOUDINARY_CLOUD_NAME=replace_me
