@@ -64,6 +64,25 @@ app.use(sanitizeInput);
 const stream = { write: (message) => logger.http(message.trim()) };
 app.use(morgan(":method :url :status :response-time ms", { stream }));
 
+app.get('/', (req, res) => {
+	res.status(200).json({
+		success: true,
+		message: 'Wear Web backend is running',
+		data: {
+			environment: process.env.NODE_ENV || 'development',
+			timestamp: new Date().toISOString(),
+		},
+	});
+});
+
+app.get('/health', (req, res) => {
+	res.status(200).json({
+		success: true,
+		status: 'ok',
+		timestamp: new Date().toISOString(),
+	});
+});
+
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
