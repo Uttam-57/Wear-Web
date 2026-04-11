@@ -10,6 +10,10 @@ This file documents product behavior and operational flow for each role.
 - Frontend setup and implementation: [frontend/README.md](frontend/README.md)
 - Backend setup and implementation: [backend/README.md](backend/README.md)
 
+## Live Deployment
+
+- Frontend (Vercel): https://wear-web-nine.vercel.app/
+
 ## What the Project Delivers
 
 Wear Web supports full marketplace operations across three connected panels.
