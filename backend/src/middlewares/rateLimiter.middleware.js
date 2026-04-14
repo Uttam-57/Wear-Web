@@ -19,7 +19,7 @@ export const rateLimiter = (type = "general") => {
     max: config.max,
     standardHeaders: true,
     legacyHeaders: false,
-    handler: (req, res) => {
+    handler: (req, res,next) => {
       res.status(429).json({
         success: false,
         errorCode: "TOO_MANY_REQUESTS",
