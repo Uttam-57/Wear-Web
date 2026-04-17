@@ -87,17 +87,13 @@ walletTransactionSchema.index({ sellerId: 1, type: 1, createdAt: -1 });
 walletTransactionSchema.index({ sellerId: 1, type: 1, payoutStatus: 1, createdAt: -1 });
 walletTransactionSchema.index({ type: 1, payoutStatus: 1, createdAt: -1 });
 
-walletTransactionSchema.pre('validate', function setDefaultWithdrawalStatus(next) {
+walletTransactionSchema.pre('validate', async function () {
   if (this.type !== 'withdrawal') {
-    if (!this.payoutStatus) this.payoutStatus = null;
-    return next();
+    this.payoutStatus ??= null;
+    return; // Simply return to finish the hook
   }
 
-  if (!this.payoutStatus) {
-    this.payoutStatus = 'approved';
-  }
-
-  next();
+  this.payoutStatus ??= 'approved';
 });
 
 const WalletTransaction = mongoose.model('WalletTransaction', walletTransactionSchema);
