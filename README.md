@@ -12,7 +12,7 @@ This file documents product behavior and operational flow for each role.
 
 ## Live Deployment
 
-- Frontend (Vercel): https://wear-web-nine.vercel.app/
+- Frontend (Vercel): https://wearweb-7ut3.onrender.com
 
 ## What the Project Delivers
 
@@ -55,7 +55,6 @@ Use these test accounts:
 
 - Customers: customer1@gmail.com to customer18@gmail.com
 - Sellers: seller1@gmail.com to seller18@gmail.com
-- Admin: admin@gmail.com
 - Password for all accounts: Password@123
 
 ## Checkout Test Data
