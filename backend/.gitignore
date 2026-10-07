@@ -2,6 +2,8 @@
 node_modules/
 
 src/seed_data/resetUser.js
+src/seed_data/user.js
+
 # Environment and secrets
 .env
 .env.*
