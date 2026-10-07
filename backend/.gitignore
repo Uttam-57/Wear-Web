@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
 
+src/seed_data/resetUser.js
 # Environment and secrets
 .env
 .env.*
